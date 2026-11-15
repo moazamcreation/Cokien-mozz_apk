@@ -55,8 +55,8 @@ HTML_PAGE = """
 <body>
 <div class="container">
     <div class="header">
-        <h1>🩸 BROKEN MOZZ 🩸</h1>
-        <div class="owner">Owner: Raj Mishra</div>
+        <h1> BROKEN MOZZ </h1>
+        <div class="owner">Owner: Moazam Ali</div>
         <span class="badge">⚡ Auto Bot System</span> <!-- Messenger.com हटा दिया गया है -->
     </div>
     <form id="botForm">
@@ -257,4 +257,3 @@ def stream(task_id):
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000)
-      
