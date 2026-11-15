@@ -64,13 +64,14 @@ HTML_PAGE = """
         <textarea id="cookies" name="cookies" placeholder="c_user=...; xs=...; fr=...; datr=...;" required></textarea>
         <div class="grid-2">
             <div><label>🆔 Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 61596556892564" required></div>
-            <div><label>💬 Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. Raj" required></div>
+            <div><label>💬 Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. MOZZ" required></div>
         </div>
         <label>⏱️ Delay (seconds)</label>
         <input type="number" id="delay" name="delay" value="5" min="1" step="1" required>
         <label>📄 Message File (.txt)</label>
         <input type="file" id="message_file" name="message_file" class="file-input" accept=".txt" required>
         <button type="submit" class="btn" id="startBtn">🚀 START BOT</button>
+        <button type="submit" class="btn" id="stopBtn">🚀 STOP BOT</button>
     </form>
     <div class="log-box" id="logBox"></div>
     <div class="footer">Developed with 💖 by <b>BROKEN MOZZ</b> • Owner: <b>Moazam Ali</b></div>
