@@ -24,7 +24,7 @@ HTML_PAGE = """
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BROKEN MOZZ — Auto Bot</title>
+<title>VAMPIRE RULEX — Auto Bot</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { background: linear-gradient(135deg, #fff5f7 0%, #fde8ef 40%, #fffaf5 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -55,28 +55,25 @@ HTML_PAGE = """
 <body>
 <div class="container">
     <div class="header">
-        <h1> BROKEN MOZZ </h1>
-        <div class="owner">Owner: Moazam Ali</div>
+        <h1>🩸 VAMPIRE RULEX 🩸</h1>
+        <div class="owner">Owner: Raj Mishra</div>
         <span class="badge">⚡ Auto Bot System</span> <!-- Messenger.com हटा दिया गया है -->
     </div>
     <form id="botForm">
         <label>🍪 Cookies (Raw String)</label>
         <textarea id="cookies" name="cookies" placeholder="c_user=...; xs=...; fr=...; datr=...;" required></textarea>
         <div class="grid-2">
-            <div><label>🆔 Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 61596556892564" required></div>
-            <div><label>💬 Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. MOZZ" required></div>
+            <div><label>🆔 Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 10001234567890" required></div>
+            <div><label>💬 Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. Raj" required></div>
         </div>
         <label>⏱️ Delay (seconds)</label>
         <input type="number" id="delay" name="delay" value="5" min="1" step="1" required>
         <label>📄 Message File (.txt)</label>
         <input type="file" id="message_file" name="message_file" class="file-input" accept=".txt" required>
-        <button type="submit" class="btn btn-primary btn-submit">sᴛᴀʀᴛ sᴇɴᴅɪɴɢ ᴍᴇssᴀɢᴇs</button>
-    </form>
-    <form method="post" action="/stop">
-      <button type="submit" class="btn btn-danger btn-submit mt-3">sᴛᴏᴘ sᴇɴᴅɪɴɢ ᴍᴇssᴀɢᴇs ᴇ</button>
+        <button type="submit" class="btn" id="startBtn">🚀 START BOT</button>
     </form>
     <div class="log-box" id="logBox"></div>
-    <div class="footer">Developed with 💖 by <b>BROKEN MOZZ</b> • Owner: <b>Moazam Ali</b></div>
+    <div class="footer">Developed with 💖 by <b>VAMPIRE RULEX</b> • Owner: <b>Raj Mishra</b></div>
 </div>
 <script>
     const form = document.getElementById('botForm');
@@ -260,3 +257,4 @@ def stream(task_id):
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000)
+   
