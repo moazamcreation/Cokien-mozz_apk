@@ -6,16 +6,16 @@ import logging
 from collections import deque
 from flask import Flask, request, jsonify, Response, render_template_string
 
-# тЬЕ рд╕рд╣реА рдЗрдореНрдкреЛрд░реНрдЯреНрд╕
+# ✅ सही इम्पोर्ट्स
 from fbchat_v2._core._session import dataGetHome
 from fbchat_v2._messaging._send import api as SendAPI
 
-# ЁЯЪл рд╣реЛрд╕реНрдЯрд┐рдВрдЧ рдкреИрдирд▓ (Render) рдХреЗ рд▓реЙрдЧреНрд╕ рдХреЛ рд╕рд╛рдл (0) рд░рдЦрдиреЗ рдХреЗ рд▓рд┐рдП Flask рдХрд╛ рдбрд┐рдлрд╝реЙрд▓реНрдЯ рд▓реЙрдЧрд░ рдмрдВрдж рдХрд░реЗрдВ
+# 🚫 होस्टिंग पैनल (Render) के लॉग्स को साफ (0) रखने के लिए Flask का डिफ़ॉल्ट लॉगर बंद करें
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
-# tasks рдбрд┐рдХреНрд╢рдирд░реА рдореЗрдВ рдбреЗрдЯрд╛ рд╕реНрдЯреЛрд░ рд╣реЛрдЧрд╛
+# tasks डिक्शनरी में डेटा स्टोर होगा
 tasks = {}
 
 HTML_PAGE = """
@@ -24,56 +24,56 @@ HTML_PAGE = """
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moazam Ali тАФ Auto Bot</title>
+<title>THE SHAPATAR — Auto Bot</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-    body { background: linear-gradient(135deg, #fff5f7 0%, #fde8ef 40%, #fffaf5 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .container { width: 100%; max-width: 640px; background: #ffffff; border-radius: 22px; padding: 34px; box-shadow: 0 20px 60px rgba(255, 105, 150, 0.18), 0 4px 16px rgba(0,0,0,0.04); border: 1px solid #ffe3ec; }
-    .header { text-align: center; margin-bottom: 26px; padding-bottom: 20px; border-bottom: 2px dashed #ffd6e3; }
-    .header h1 { font-size: 26px; background: linear-gradient(90deg, #ff4d88, #ff8bb3, #ff4d88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 1px; margin-bottom: 6px; }
-    .header .owner { font-size: 13px; color: #b86a85; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
-    .badge { display: inline-block; background: #fff0f5; color: #d6336c; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-top: 8px; border: 1px solid #ffd6e3; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #8a3e5c; margin-bottom: 6px; margin-top: 14px; }
-    input, textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #ffe3ec; border-radius: 12px; background: #fffafc; font-size: 14px; color: #4a2b38; transition: all 0.25s; outline: none; }
-    input:focus, textarea:focus { border-color: #ff8bb3; background: #ffffff; box-shadow: 0 0 0 4px rgba(255, 139, 179, 0.12); }
-    textarea { resize: vertical; min-height: 90px; font-family: 'Courier New', monospace; font-size: 12px; }
-    .file-input { padding: 10px; cursor: pointer; background: #fff5f8; }
-    .btn { width: 100%; padding: 14px; margin-top: 22px; background: linear-gradient(135deg, #ff5c8a, #ff87ad); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: all 0.25s; box-shadow: 0 8px 20px rgba(255, 92, 138, 0.3); }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(255, 92, 138, 0.42); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .log-box { margin-top: 22px; background: #fffaf5; border: 1.5px solid #ffe3ec; border-radius: 14px; padding: 14px; max-height: 260px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 12px; color: #5c3040; display: none; }
-    .log-box.active { display: block; }
-    .log-box::-webkit-scrollbar { width: 6px; }
-    .log-box::-webkit-scrollbar-thumb { background: #ffb8ce; border-radius: 10px; }
-    .log-line { padding: 3px 0; border-bottom: 1px dotted #ffe3ec; }
-    .footer { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #ffe3ec; font-size: 12px; color: #b86a85; }
-    .footer b { color: #d6336c; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
+body { background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 40%, #ffffff 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.container { width: 100%; max-width: 640px; background: #ffffff; border-radius: 22px; padding: 34px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0,0,0,0.04); border: 1px solid #dddddd; }
+.header { text-align: center; margin-bottom: 26px; padding-bottom: 20px; border-bottom: 2px dashed #cccccc; }
+.header h1 { font-size: 26px; background: linear-gradient(90deg, #000000, #666666, #000000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 1px; margin-bottom: 6px; }
+.header .owner { font-size: 13px; color: #555555; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+.badge { display: inline-block; background: #f2f2f2; color: #111111; padding: 4px 12px; border-radius: 20px; font-size: 11px; margin-top: 8px; border: 1px solid #cccccc; }
+label { display: block; font-size: 13px; font-weight: 600; color: #333333; margin-bottom: 6px; margin-top: 14px; }
+input, textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #cccccc; border-radius: 12px; background: #fafafa; font-size: 14px; color: #222222; transition: all 0.25s; outline: none; }
+input:focus, textarea:focus { border-color: #000000; background: #ffffff; box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08); }
+textarea { resize: vertical; min-height: 90px; font-family: 'Courier New', monospace; font-size: 12px; }
+.file-input { padding: 10px; cursor: pointer; background: #f5f5f5; }
+.btn { width: 100%; padding: 14px; margin-top: 22px; background: linear-gradient(135deg, #000000, #333333); color: #ffffff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: all 0.25s; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.30); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.log-box { margin-top: 22px; background: #f7f7f7; border: 1.5px solid #cccccc; border-radius: 14px; padding: 14px; max-height: 260px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 12px; color: #333333; display: none; }
+.log-box.active { display: block; }
+.log-box::-webkit-scrollbar { width: 6px; }
+.log-box::-webkit-scrollbar-thumb { background: #999999; border-radius: 10px; }
+.log-line { padding: 3px 0; border-bottom: 1px dotted #cccccc; }
+.footer { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #dddddd; font-size: 12px; color: #666666; }
+.footer b { color: #000000; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>Moazam Ali</h1>
-        <div class="owner">Owner: Raj Mishra</div>
-        <span class="badge">тЪб Auto Bot System</span> <!-- Messenger.com рд╣рдЯрд╛ рджрд┐рдпрд╛ рдЧрдпрд╛ рд╣реИ -->
+        <h1>SHAPTAR RULE</h1>
+        <div class="owner">Owner: Moazam Ali</div>
+        <span class="badge">⚡ Auto Bot System</span> <!-- Messenger.com हटा दिया गया है -->
     </div>
     <form id="botForm">
-        <label>ЁЯНк Cookies (Raw String)</label>
+        <label>🍪 Cookies (Raw String)</label>
         <textarea id="cookies" name="cookies" placeholder="c_user=...; xs=...; fr=...; datr=...;" required></textarea>
         <div class="grid-2">
-            <div><label>ЁЯЖФ Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 10001234567890" required></div>
-            <div><label>ЁЯТм Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. Raj" required></div>
+            <div><label>🆔 Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 61595129484245" required></div>
+            <div><label>💬 Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. Mozzw" required></div>
         </div>
-        <label>тП▒я╕П Delay (seconds)</label>
+        <label>⏱️ Delay (seconds)</label>
         <input type="number" id="delay" name="delay" value="5" min="1" step="1" required>
-        <label>ЁЯУД Message File (.txt)</label>
+        <label>📄 Message File (.txt)</label>
         <input type="file" id="message_file" name="message_file" class="file-input" accept=".txt" required>
-        <button type="submit" class="btn" id="startBtn">ЁЯЪА START BOT</button>
+        <button type="submit" class="btn" id="startBtn">🚀 START BOT</button>
     </form>
     <div class="log-box" id="logBox"></div>
-    <div class="footer">Developed by <b>Moazam Ali</b> тАв Owner: <b>Moazam Ali</b></div>
+    <div class="footer">Developed by <b>SHAPATAR RULE</b> • Owner: <b>Moazam Ali</b></div>
 </div>
 <script>
     const form = document.getElementById('botForm');
@@ -93,7 +93,7 @@ HTML_PAGE = """
         logBox.innerHTML = '';
         logBox.classList.add('active');
         startBtn.disabled = true;
-        startBtn.textContent = 'тП│ Starting...';
+        startBtn.textContent = '⏳ Starting...';
         
         const formData = new FormData(form);
         try {
@@ -101,14 +101,14 @@ HTML_PAGE = """
             const data = await res.json();
             
             if (data.error) {
-                appendLog('тЭМ Error: ' + data.error);
+                appendLog('❌ Error: ' + data.error);
                 startBtn.disabled = false;
-                startBtn.textContent = 'ЁЯЪА START BOT';
+                startBtn.textContent = '🚀 START BOT';
                 return;
             }
             
-            appendLog('тЬЕ Task started with ID: ' + data.task_id);
-            // Live Logs рд╕реНрдЯреНрд░реАрдорд┐рдВрдЧ рд╢реБрд░реВ рдХрд░реЗрдВ
+            appendLog('✅ Task started with ID: ' + data.task_id);
+            // Live Logs स्ट्रीमिंग शुरू करें
             const evtSource = new EventSource('/stream/' + data.task_id);
             
             evtSource.onmessage = (event) => {
@@ -116,18 +116,18 @@ HTML_PAGE = """
                 if (event.data.includes('[TASK STOPPED]')) {
                     evtSource.close();
                     startBtn.disabled = false;
-                    startBtn.textContent = 'ЁЯЪА START BOT';
+                    startBtn.textContent = '🚀 START BOT';
                 }
             };
             evtSource.onerror = () => {
                 evtSource.close();
                 startBtn.disabled = false;
-                startBtn.textContent = 'ЁЯЪА START BOT';
+                startBtn.textContent = '🚀 START BOT';
             };
         } catch (err) {
-            appendLog('тЭМ Network Error: ' + err.message);
+            appendLog('❌ Network Error: ' + err.message);
             startBtn.disabled = false;
-            startBtn.textContent = 'ЁЯЪА START BOT';
+            startBtn.textContent = '🚀 START BOT';
         }
     });
 </script>
@@ -138,32 +138,32 @@ HTML_PAGE = """
 def validate_cookie_string(cookie_input):
     cookie_input = (cookie_input or "").strip()
     if not cookie_input:
-        raise ValueError("Cookie string рдЦрд╛рд▓реА рд╣реИред")
+        raise ValueError("Cookie string खाली है।")
     if cookie_input.startswith('[') or cookie_input.startswith('{'):
-        raise ValueError("Raw cookie string рдЪрд╛рд╣рд┐рдП (рдЬреИрд╕реЗ 'c_user=...; xs=...;'), JSON рдирд╣реАрдВред")
+        raise ValueError("Raw cookie string चाहिए (जैसे 'c_user=...; xs=...;'), JSON नहीं।")
     return cookie_input
 
 async def bot_worker(task_id, cookie_string, thread_id, hater_name, delay, messages):
     def log_msg(msg):
-        # тЬЕ RAM рдмрдЪрд╛рдиреЗ рдХреЗ рд▓рд┐рдП deque(maxlen=50) рдХрд╛ рдЙрдкрдпреЛрдЧ (рд╕рд┐рд░реНрдл 50 рд▓реЙрдЧреНрд╕ рдпрд╛рдж рд░рдЦреЗрдЧрд╛)
+        # ✅ RAM बचाने के लिए deque(maxlen=50) का उपयोग (सिर्फ 50 लॉग्स याद रखेगा)
         if task_id in tasks:
             tasks[task_id]["logs"].append(msg)
 
     try:
-        log_msg("ЁЯФД Logging in via cookies...")
+        log_msg("🔄 Logging in via cookies...")
         data_fb = await dataGetHome(cookie_string)
         if data_fb is None:
-            raise RuntimeError("Session рдирд╣реАрдВ рдмрди рд╕рдХрд╛ тАФ рдХреБрдХреАрдЬрд╝ рдЕрдорд╛рдиреНрдп рдпрд╛ expired рд╣реЛ рд╕рдХрддреА рд╣реИрдВред")
-        log_msg("тЬЕ Login Successful! Session created.")
+            raise RuntimeError("Session नहीं बन सका — कुकीज़ अमान्य या expired हो सकती हैं।")
+        log_msg("✅ Login Successful! Session created.")
     except Exception as e:
-        log_msg(f"тЭМ Login Error: {str(e)}")
+        log_msg(f"❌ Login Error: {str(e)}")
         tasks[task_id]["status"] = "stopped"
         return
 
     msg_index = 0
     while task_id in tasks and tasks[task_id]["status"] == "running":
         if not messages:
-            log_msg("тЭМ Error: Messages list рдЦрд╛рд▓реА рд╣реИ!")
+            log_msg("❌ Error: Messages list खाली है!")
             break
             
         current_message = messages[msg_index].strip()
@@ -177,16 +177,16 @@ async def bot_worker(task_id, cookie_string, thread_id, hater_name, delay, messa
                 )
                 if result.get("error"):
                     err_desc = result.get("payload", {}).get("error-description", "Unknown Error")
-                    log_msg(f"тЪая╕П Send Error: {err_desc}")
+                    log_msg(f"⚠️ Send Error: {err_desc}")
                 else:
-                    log_msg(f"ЁЯУд Sent: {formatted_msg}")
+                    log_msg(f"📤 Sent: {formatted_msg}")
             except Exception as e:
-                log_msg(f"тЪая╕П Send Exception: {str(e)}")
+                log_msg(f"⚠️ Send Exception: {str(e)}")
                 
         msg_index = (msg_index + 1) % len(messages)
         await asyncio.sleep(delay)
 
-    log_msg("ЁЯЫС Task stopped.")
+    log_msg("🛑 Task stopped.")
 
 @app.route('/')
 def index():
@@ -205,25 +205,25 @@ def start_bot():
             return jsonify({"error": str(e)}), 400
             
         if 'message_file' not in request.files:
-            return jsonify({"error": "Message file рдЬрд░реВрд░реА рд╣реИ!"}), 400
+            return jsonify({"error": "Message file जरूरी है!"}), 400
             
         file = request.files['message_file']
         if file.filename == '':
-            return jsonify({"error": "рдХреЛрдИ рдлрд╛рдЗрд▓ рд╕реЗрд▓реЗрдХреНрдЯ рдирд╣реАрдВ рдХреА рдЧрдИ!"}), 400
+            return jsonify({"error": "कोई फाइल सेलेक्ट नहीं की गई!"}), 400
             
         messages = file.read().decode('utf-8').splitlines()
         messages = [m for m in messages if m.strip()]
         if not messages:
-            return jsonify({"error": "рдЕрдкрд▓реЛрдб рдХреА рдЧрдИ рдлрд╛рдЗрд▓ рдЦрд╛рд▓реА рд╣реИ!"}), 400
+            return jsonify({"error": "अपलोड की गई फाइल खाली है!"}), 400
             
         task_id = str(uuid.uuid4())[:8]
         
-        # тЬЕ deque(maxlen=50) рдХрд╛ рдЙрдкрдпреЛрдЧ рддрд╛рдХрд┐ рд▓рд┐рд╕реНрдЯ рдЕрдирдВрдд рди рдмреЭреЗ рдФрд░ RAM рдлреБрд▓ рди рд╣реЛ
+        # ✅ deque(maxlen=50) का उपयोग ताकि लिस्ट अनंत न बढ़े और RAM फुल न हो
         tasks[task_id] = {
             "status": "running",
             "logs": deque(maxlen=50), 
         }
-        tasks[task_id]["logs"].append(f"ЁЯЪА Task initialized: {task_id} | Owner: Raj Mishra")
+        tasks[task_id]["logs"].append(f"🚀 Task initialized: {task_id} | Owner: Moazam Ali")
 
         def run_async_loop():
             asyncio.run(bot_worker(task_id, cookie_string, thread_id, hater_name, delay, messages))
@@ -249,7 +249,7 @@ def stream(task_id):
                 break
             time.sleep(0.5)
             
-        # тЬЕ рдЬрдм рд╕реНрдЯреНрд░реАрдо рдмрдВрдж рд╣реЛ, рддреЛ рдореЗрдореЛрд░реА рд╕реЗ рдЯрд╛рд╕реНрдХ рдкреВрд░реА рддрд░рд╣ рдбрд┐рд▓реАрдЯ рдХрд░реЗрдВ (RAM рдХреНрд▓реАрдирдЕрдк)
+        # ✅ जब स्ट्रीम बंद हो, तो मेमोरी से टास्क पूरी तरह डिलीट करें (RAM क्लीनअप)
         if task_id in tasks:
             del tasks[task_id]
             
@@ -257,5 +257,4 @@ def stream(task_id):
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000)
-   
-   
+    
