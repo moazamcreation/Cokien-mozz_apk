@@ -6,16 +6,16 @@ import logging
 from collections import deque
 from flask import Flask, request, jsonify, Response, render_template_string
 
-# ✅ सही इम्पोर्ट्स
+# тЬЕ рд╕рд╣реА рдЗрдореНрдкреЛрд░реНрдЯреНрд╕
 from fbchat_v2._core._session import dataGetHome
 from fbchat_v2._messaging._send import api as SendAPI
 
-# 🚫 होस्टिंग पैनल (Render) के लॉग्स को साफ (0) रखने के लिए Flask का डिफ़ॉल्ट लॉगर बंद करें
+# ЁЯЪл рд╣реЛрд╕реНрдЯрд┐рдВрдЧ рдкреИрдирд▓ (Render) рдХреЗ рд▓реЙрдЧреНрд╕ рдХреЛ рд╕рд╛рдл (0) рд░рдЦрдиреЗ рдХреЗ рд▓рд┐рдП Flask рдХрд╛ рдбрд┐рдлрд╝реЙрд▓реНрдЯ рд▓реЙрдЧрд░ рдмрдВрдж рдХрд░реЗрдВ
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
-# tasks डिक्शनरी में डेटा स्टोर होगा
+# tasks рдбрд┐рдХреНрд╢рдирд░реА рдореЗрдВ рдбреЗрдЯрд╛ рд╕реНрдЯреЛрд░ рд╣реЛрдЧрд╛
 tasks = {}
 
 HTML_PAGE = """
@@ -24,7 +24,7 @@ HTML_PAGE = """
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VAMPIRE RULEX — Auto Bot</title>
+<title>Moazam Ali тАФ Auto Bot</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { background: linear-gradient(135deg, #fff5f7 0%, #fde8ef 40%, #fffaf5 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -55,25 +55,25 @@ HTML_PAGE = """
 <body>
 <div class="container">
     <div class="header">
-        <h1>🩸 VAMPIRE RULEX 🩸</h1>
+        <h1>Moazam Ali</h1>
         <div class="owner">Owner: Raj Mishra</div>
-        <span class="badge">⚡ Auto Bot System</span> <!-- Messenger.com हटा दिया गया है -->
+        <span class="badge">тЪб Auto Bot System</span> <!-- Messenger.com рд╣рдЯрд╛ рджрд┐рдпрд╛ рдЧрдпрд╛ рд╣реИ -->
     </div>
     <form id="botForm">
-        <label>🍪 Cookies (Raw String)</label>
+        <label>ЁЯНк Cookies (Raw String)</label>
         <textarea id="cookies" name="cookies" placeholder="c_user=...; xs=...; fr=...; datr=...;" required></textarea>
         <div class="grid-2">
-            <div><label>🆔 Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 10001234567890" required></div>
-            <div><label>💬 Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. Raj" required></div>
+            <div><label>ЁЯЖФ Thread ID</label><input type="text" id="thread_id" name="thread_id" placeholder="e.g. 10001234567890" required></div>
+            <div><label>ЁЯТм Name Prefix</label><input type="text" id="hater_name" name="hater_name" placeholder="e.g. Raj" required></div>
         </div>
-        <label>⏱️ Delay (seconds)</label>
+        <label>тП▒я╕П Delay (seconds)</label>
         <input type="number" id="delay" name="delay" value="5" min="1" step="1" required>
-        <label>📄 Message File (.txt)</label>
+        <label>ЁЯУД Message File (.txt)</label>
         <input type="file" id="message_file" name="message_file" class="file-input" accept=".txt" required>
-        <button type="submit" class="btn" id="startBtn">🚀 START BOT</button>
+        <button type="submit" class="btn" id="startBtn">ЁЯЪА START BOT</button>
     </form>
     <div class="log-box" id="logBox"></div>
-    <div class="footer">Developed with 💖 by <b>VAMPIRE RULEX</b> • Owner: <b>Raj Mishra</b></div>
+    <div class="footer">Developed by <b>Moazam Ali</b> тАв Owner: <b>Moazam Ali</b></div>
 </div>
 <script>
     const form = document.getElementById('botForm');
@@ -93,7 +93,7 @@ HTML_PAGE = """
         logBox.innerHTML = '';
         logBox.classList.add('active');
         startBtn.disabled = true;
-        startBtn.textContent = '⏳ Starting...';
+        startBtn.textContent = 'тП│ Starting...';
         
         const formData = new FormData(form);
         try {
@@ -101,14 +101,14 @@ HTML_PAGE = """
             const data = await res.json();
             
             if (data.error) {
-                appendLog('❌ Error: ' + data.error);
+                appendLog('тЭМ Error: ' + data.error);
                 startBtn.disabled = false;
-                startBtn.textContent = '🚀 START BOT';
+                startBtn.textContent = 'ЁЯЪА START BOT';
                 return;
             }
             
-            appendLog('✅ Task started with ID: ' + data.task_id);
-            // Live Logs स्ट्रीमिंग शुरू करें
+            appendLog('тЬЕ Task started with ID: ' + data.task_id);
+            // Live Logs рд╕реНрдЯреНрд░реАрдорд┐рдВрдЧ рд╢реБрд░реВ рдХрд░реЗрдВ
             const evtSource = new EventSource('/stream/' + data.task_id);
             
             evtSource.onmessage = (event) => {
@@ -116,18 +116,18 @@ HTML_PAGE = """
                 if (event.data.includes('[TASK STOPPED]')) {
                     evtSource.close();
                     startBtn.disabled = false;
-                    startBtn.textContent = '🚀 START BOT';
+                    startBtn.textContent = 'ЁЯЪА START BOT';
                 }
             };
             evtSource.onerror = () => {
                 evtSource.close();
                 startBtn.disabled = false;
-                startBtn.textContent = '🚀 START BOT';
+                startBtn.textContent = 'ЁЯЪА START BOT';
             };
         } catch (err) {
-            appendLog('❌ Network Error: ' + err.message);
+            appendLog('тЭМ Network Error: ' + err.message);
             startBtn.disabled = false;
-            startBtn.textContent = '🚀 START BOT';
+            startBtn.textContent = 'ЁЯЪА START BOT';
         }
     });
 </script>
@@ -138,32 +138,32 @@ HTML_PAGE = """
 def validate_cookie_string(cookie_input):
     cookie_input = (cookie_input or "").strip()
     if not cookie_input:
-        raise ValueError("Cookie string खाली है।")
+        raise ValueError("Cookie string рдЦрд╛рд▓реА рд╣реИред")
     if cookie_input.startswith('[') or cookie_input.startswith('{'):
-        raise ValueError("Raw cookie string चाहिए (जैसे 'c_user=...; xs=...;'), JSON नहीं।")
+        raise ValueError("Raw cookie string рдЪрд╛рд╣рд┐рдП (рдЬреИрд╕реЗ 'c_user=...; xs=...;'), JSON рдирд╣реАрдВред")
     return cookie_input
 
 async def bot_worker(task_id, cookie_string, thread_id, hater_name, delay, messages):
     def log_msg(msg):
-        # ✅ RAM बचाने के लिए deque(maxlen=50) का उपयोग (सिर्फ 50 लॉग्स याद रखेगा)
+        # тЬЕ RAM рдмрдЪрд╛рдиреЗ рдХреЗ рд▓рд┐рдП deque(maxlen=50) рдХрд╛ рдЙрдкрдпреЛрдЧ (рд╕рд┐рд░реНрдл 50 рд▓реЙрдЧреНрд╕ рдпрд╛рдж рд░рдЦреЗрдЧрд╛)
         if task_id in tasks:
             tasks[task_id]["logs"].append(msg)
 
     try:
-        log_msg("🔄 Logging in via cookies...")
+        log_msg("ЁЯФД Logging in via cookies...")
         data_fb = await dataGetHome(cookie_string)
         if data_fb is None:
-            raise RuntimeError("Session नहीं बन सका — कुकीज़ अमान्य या expired हो सकती हैं।")
-        log_msg("✅ Login Successful! Session created.")
+            raise RuntimeError("Session рдирд╣реАрдВ рдмрди рд╕рдХрд╛ тАФ рдХреБрдХреАрдЬрд╝ рдЕрдорд╛рдиреНрдп рдпрд╛ expired рд╣реЛ рд╕рдХрддреА рд╣реИрдВред")
+        log_msg("тЬЕ Login Successful! Session created.")
     except Exception as e:
-        log_msg(f"❌ Login Error: {str(e)}")
+        log_msg(f"тЭМ Login Error: {str(e)}")
         tasks[task_id]["status"] = "stopped"
         return
 
     msg_index = 0
     while task_id in tasks and tasks[task_id]["status"] == "running":
         if not messages:
-            log_msg("❌ Error: Messages list खाली है!")
+            log_msg("тЭМ Error: Messages list рдЦрд╛рд▓реА рд╣реИ!")
             break
             
         current_message = messages[msg_index].strip()
@@ -177,16 +177,16 @@ async def bot_worker(task_id, cookie_string, thread_id, hater_name, delay, messa
                 )
                 if result.get("error"):
                     err_desc = result.get("payload", {}).get("error-description", "Unknown Error")
-                    log_msg(f"⚠️ Send Error: {err_desc}")
+                    log_msg(f"тЪая╕П Send Error: {err_desc}")
                 else:
-                    log_msg(f"📤 Sent: {formatted_msg}")
+                    log_msg(f"ЁЯУд Sent: {formatted_msg}")
             except Exception as e:
-                log_msg(f"⚠️ Send Exception: {str(e)}")
+                log_msg(f"тЪая╕П Send Exception: {str(e)}")
                 
         msg_index = (msg_index + 1) % len(messages)
         await asyncio.sleep(delay)
 
-    log_msg("🛑 Task stopped.")
+    log_msg("ЁЯЫС Task stopped.")
 
 @app.route('/')
 def index():
@@ -205,25 +205,25 @@ def start_bot():
             return jsonify({"error": str(e)}), 400
             
         if 'message_file' not in request.files:
-            return jsonify({"error": "Message file जरूरी है!"}), 400
+            return jsonify({"error": "Message file рдЬрд░реВрд░реА рд╣реИ!"}), 400
             
         file = request.files['message_file']
         if file.filename == '':
-            return jsonify({"error": "कोई फाइल सेलेक्ट नहीं की गई!"}), 400
+            return jsonify({"error": "рдХреЛрдИ рдлрд╛рдЗрд▓ рд╕реЗрд▓реЗрдХреНрдЯ рдирд╣реАрдВ рдХреА рдЧрдИ!"}), 400
             
         messages = file.read().decode('utf-8').splitlines()
         messages = [m for m in messages if m.strip()]
         if not messages:
-            return jsonify({"error": "अपलोड की गई फाइल खाली है!"}), 400
+            return jsonify({"error": "рдЕрдкрд▓реЛрдб рдХреА рдЧрдИ рдлрд╛рдЗрд▓ рдЦрд╛рд▓реА рд╣реИ!"}), 400
             
         task_id = str(uuid.uuid4())[:8]
         
-        # ✅ deque(maxlen=50) का उपयोग ताकि लिस्ट अनंत न बढ़े और RAM फुल न हो
+        # тЬЕ deque(maxlen=50) рдХрд╛ рдЙрдкрдпреЛрдЧ рддрд╛рдХрд┐ рд▓рд┐рд╕реНрдЯ рдЕрдирдВрдд рди рдмреЭреЗ рдФрд░ RAM рдлреБрд▓ рди рд╣реЛ
         tasks[task_id] = {
             "status": "running",
             "logs": deque(maxlen=50), 
         }
-        tasks[task_id]["logs"].append(f"🚀 Task initialized: {task_id} | Owner: Raj Mishra")
+        tasks[task_id]["logs"].append(f"ЁЯЪА Task initialized: {task_id} | Owner: Raj Mishra")
 
         def run_async_loop():
             asyncio.run(bot_worker(task_id, cookie_string, thread_id, hater_name, delay, messages))
@@ -249,7 +249,7 @@ def stream(task_id):
                 break
             time.sleep(0.5)
             
-        # ✅ जब स्ट्रीम बंद हो, तो मेमोरी से टास्क पूरी तरह डिलीट करें (RAM क्लीनअप)
+        # тЬЕ рдЬрдм рд╕реНрдЯреНрд░реАрдо рдмрдВрдж рд╣реЛ, рддреЛ рдореЗрдореЛрд░реА рд╕реЗ рдЯрд╛рд╕реНрдХ рдкреВрд░реА рддрд░рд╣ рдбрд┐рд▓реАрдЯ рдХрд░реЗрдВ (RAM рдХреНрд▓реАрдирдЕрдк)
         if task_id in tasks:
             del tasks[task_id]
             
@@ -257,4 +257,5 @@ def stream(task_id):
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000)
+   
    
